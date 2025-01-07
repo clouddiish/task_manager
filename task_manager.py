@@ -2,6 +2,15 @@ import json
 
 
 def validate_input(input):
+    """
+    Validates whether the input is a non-empty string.
+
+    Args:
+        input (any): The input to validate.
+
+    Returns:
+        bool: True if the input is a non-empty string, False otherwise.
+    """
     if type(input) == str and bool(input.strip()):
         return True
     else:
@@ -9,6 +18,15 @@ def validate_input(input):
 
 
 def load_tasks(file_path):
+    """
+    Loads tasks from a JSON file.
+
+    Args:
+        file_path (str): The path to the JSON file containing tasks.
+
+    Returns:
+        dict: A dictionary with task names as keys and their completion status as values.
+    """
     with open(file_path, "r") as f:
         tasks = json.load(f)
 
@@ -18,13 +36,27 @@ def load_tasks(file_path):
 
 
 def dump_tasks(file_path, tasks):
+    """
+    Writes tasks to a JSON file.
+
+    Args:
+        file_path (str): The path to the JSON file.
+        tasks (dict): A dictionary with task names as keys and their completion status as values.
+    """
     with open(file_path, "w") as f:
         json.dump(tasks, f, indent=2)
 
 
 def list_tasks(tasks):
+    """
+    Prints all tasks with their completion status.
+
+    Args:
+        tasks (dict): A dictionary with task names as keys and their completion status as values.
+    """
     if len(tasks) == 0:
         print("No tasks added.")
+        return
 
     for task in tasks:
         if tasks[task]:
@@ -34,6 +66,17 @@ def list_tasks(tasks):
 
 
 def add_task(file_path, tasks, name):
+    """
+    Adds a new task to the tasks list.
+
+    Args:
+        file_path (str): The path to the JSON file.
+        tasks (dict): A dictionary with task names as keys and their completion status as values.
+        name (str): The name of the new task.
+
+    Raises:
+        ValueError: If the task already exists or if the input is invalid.
+    """
     name = name.lower()
 
     if validate_input(name) and (name.lower() not in tasks):
@@ -48,6 +91,18 @@ def add_task(file_path, tasks, name):
 
 
 def remove_task(file_path, tasks, name):
+    """
+    Removes a task from the tasks list.
+
+    Args:
+        file_path (str): The path to the JSON file.
+        tasks (dict): A dictionary with task names as keys and their completion status as values.
+        name (str): The name of the task to remove.
+
+    Raises:
+        TypeError: If the input is invalid.
+        ValueError: If the task does not exist.
+    """
     if not validate_input(name):
         raise TypeError
 
@@ -68,6 +123,18 @@ def remove_task(file_path, tasks, name):
 
 
 def change_complete(file_path, tasks, name):
+    """
+    Toggles the completion status of a task.
+
+    Args:
+        file_path (str): The path to the JSON file.
+        tasks (dict): A dictionary with task names as keys and their completion status as values.
+        name (str): The name of the task to toggle.
+
+    Raises:
+        TypeError: If the input is invalid.
+        ValueError: If the task does not exist.
+    """
     if not validate_input(name):
         raise TypeError
 
@@ -93,6 +160,12 @@ def change_complete(file_path, tasks, name):
 
 
 def run(file_path):
+    """
+    Runs the main task management loop.
+
+    Args:
+        file_path (str): The path to the JSON file.
+    """
     try:
         while True:
             tasks = load_tasks(file_path)
